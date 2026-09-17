@@ -31,3 +31,7 @@ export const zItemDeleteBody = z.object({
   userId: zUserId,
   itemId: zItemId,
 });
+
+export const zVerificationBody = z.object({
+  token: z.string()
+});
