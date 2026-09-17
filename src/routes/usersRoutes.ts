@@ -57,7 +57,7 @@ router.post("/api/v729/login", (req: Request, res: Response) => {
       jwt_secret,{ expiresIn: '10m' });
 
     // 4. send HTTP response with JWT token
-    return res.status(200).json({success: true, message: 'Login successful', token: token});;
+    return res.status(201).json({success: true, message: 'Login successful', token: token});;
 
   } catch (err) {return res.status(500).json({success: false, message: "Something is wrong, please try again", error: err,});}
 });
