@@ -8,6 +8,7 @@ interface Item {
 }
 export type { Item };
 
+
 interface User {
   username: string;
   password: string;
@@ -15,6 +16,7 @@ interface User {
   tokens?: string[];
 }
 export type { User };
+
 
 // JWT Payload interface
 interface UserPayload {
