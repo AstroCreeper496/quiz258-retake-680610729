@@ -5,6 +5,7 @@ import { items } from "../db/db.ts"; // import database
 import { v4 as uuidv4 } from 'uuid'; //import uuid
 import {readUserDataFile, writeUserDataFile} from "../db/db_transactions.ts";
 import jwt, { type JwtPayload } from 'jsonwebtoken';
+import { verify } from "node:crypto";
 
 const router = Router();
 const jwt_secret = process.env.JWT_SECRET || "qp@0d$u8e^dfh4i(sh73U*r4iH(fh4lnncp_dl]3;;";
@@ -14,7 +15,7 @@ const jwt_secret = process.env.JWT_SECRET || "qp@0d$u8e^dfh4i(sh73U*r4iH(fh4lnnc
 router.get("/api/v729/cart/:userId", async (req: Request, res: Response) => {
     try {
     const users = await readUserDataFile();
-    const token = req.query.token;
+    const token = req.body.token;
     const userId = req.params.userId;
     const result = zUserId.safeParse(userId);
     const VerificationParseResult = zVerificationBody.safeParse({token});
@@ -26,10 +27,12 @@ router.get("/api/v729/cart/:userId", async (req: Request, res: Response) => {
       });
     }
 
-    interface ReqData{UserId : string}
-     let reqData: ReqData;
+    interface ReqData{userId : string}
+
+    let reqData: ReqData;
+
     try {
-      reqData = jwt.verify(token as string, jwt_secret) as ReqData;
+      reqData = jwt.verify(token as string, jwt_secret) as ReqData; //undefined
     } catch (jwtErr) {
       return res.status(401).json({ success: false, message: "Invalid or expired token" });
     }
@@ -41,7 +44,7 @@ router.get("/api/v729/cart/:userId", async (req: Request, res: Response) => {
       });
     }
 
-    if(reqData.UserId != userId){
+    if(reqData.userId != userId){
       return res.status(403).json({success: false, message: "Forbidden access"});
     }
     const foundItems = items.filter(item => (item.userId === userId));

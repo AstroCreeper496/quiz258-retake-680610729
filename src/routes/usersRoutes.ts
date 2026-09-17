@@ -50,7 +50,6 @@ router.post("/api/v729/login", (req: Request, res: Response) => {
     // Create JWT Payload dynamically using found user details
     const token = jwt.sign(
       {username: foundUser.username,
-        password: foundUser.password || null,
         userId: foundUser.userId || 'USER',
         ip_address: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
       },
